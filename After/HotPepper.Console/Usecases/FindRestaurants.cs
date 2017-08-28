@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using HotPepper.Console.Integrations;
@@ -20,23 +21,42 @@ namespace HotPepper.Console.Usecases
             _gourmetService = gourmetService;
         }
 
-        public async Task<IList<Restaurant>> FindNearbyRestaurantsAsync(TimeSpan timeout)
+        public async Task<FindRestaurantsResult> FindNearbyRestaurantsAsync(string apiKey, TimeSpan timeout)
         {
             var restaurants = new List<Restaurant>();
 
             var position = _geoCoordinateService.GetGurrentPosition(timeout);
-            var result = await _gourmetService.SearchGourmetAsync(position);
-            foreach (var shop in result.Results.Shops)
+            if (position != null)
             {
-                restaurants.Add(
-                    new Restaurant
+                try
+                {
+                    var gourmetSearchResult = await _gourmetService.SearchGourmetAsync(apiKey, position.Latitude, position.Longitude);
+                    foreach (var shop in gourmetSearchResult.Results.Shops)
                     {
-                        Name = shop.Name,
-                        Genre = shop.Genre.Name
-                    });
-            }
+                        restaurants.Add(
+                            new Restaurant
+                            {
+                                Name = shop.Name,
+                                Genre = shop.Genre.Name
+                            });
+                    }
 
-            return restaurants;
+                    var findRestaurantsResult = new FindRestaurantsResult
+                    {
+                        Status = FindRestaurantsResultStatus.Ok,
+                        Restaurants = restaurants
+                    };
+                    return findRestaurantsResult;
+                }
+                catch (HttpRequestException)
+                {
+                    return new FindRestaurantsResult { Status = FindRestaurantsResultStatus.NetworkError };
+                }
+            }
+            else
+            {
+                return new FindRestaurantsResult { Status = FindRestaurantsResultStatus.Timeout };
+            }
         }
     }
 }

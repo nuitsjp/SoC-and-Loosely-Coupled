@@ -9,16 +9,16 @@ namespace HotPepper.Console.Integrations.Gourmet
     {
         private const string GourmetSearchApiEndpoint = "https://webservice.recruit.co.jp/hotpepper/gourmet/v1/";
 
-        public async Task<GourmetSearchResult> SearchGourmetAsync(Position position)
+        public async Task<GourmetSearchResult> SearchGourmetAsync(string apiKey, double latitude, double longitude)
         {
             GourmetSearchResult result;
             using (var httpClient = new HttpClient())
             {
                 var json = await httpClient.GetStringAsync(
                     $"{GourmetSearchApiEndpoint}" +
-                    $"?key={Secrets.HotPepperApiKey}" +
-                    $"&lat={position.Latitude}" +
-                    $"&lng={position.Longitude}" +
+                    $"?key={apiKey}" +
+                    $"&lat={latitude}" +
+                    $"&lng={longitude}" +
                     $"&format=json&type=lite");
                 result = JsonConvert.DeserializeObject<GourmetSearchResult>(json);
             }

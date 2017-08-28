@@ -5,6 +5,6 @@ namespace HotPepper.Console.Integrations.Gourmet
 {
     public interface IGourmetService
     {
-        Task<GourmetSearchResult> SearchGourmetAsync(Position position);
+        Task<GourmetSearchResult> SearchGourmetAsync(string apiKey, double latitude, double longitude);
     }
 }

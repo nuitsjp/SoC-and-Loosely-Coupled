@@ -60,6 +60,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Secrets.cs" />
     <Compile Include="Usecases\FindRestaurants.cs" />
+    <Compile Include="Usecases\FindRestaurantsResult.cs" />
+    <Compile Include="Usecases\FindRestaurantsResultStatus.cs" />
     <Compile Include="Usecases\IFindRestaurants.cs" />
     <Compile Include="Usecases\Restaurant.cs" />
   </ItemGroup>

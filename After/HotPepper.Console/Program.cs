@@ -57,12 +57,19 @@ namespace HotPepper.Console
             // 最初のPositionChangedイベントの発生を待つ必要がある
             var timeout = TimeSpan.FromMinutes(1);
 
-            var restaurants = await _findRestaurants.FindNearbyRestaurantsAsync(timeout);
+            var result = await _findRestaurants.FindNearbyRestaurantsAsync(Secrets.HotPepperApiKey, timeout);
 
             // 取得結果を出力する
-            foreach (var restaurant in restaurants)
+            if (result.Status == FindRestaurantsResultStatus.Ok)
             {
-                System.Console.WriteLine($"店舗名：{restaurant.Name}\tジャンル：{restaurant.Name}");
+                foreach (var restaurant in result.Restaurants)
+                {
+                    System.Console.WriteLine($"店舗名：{restaurant.Name}\tジャンル：{restaurant.Name}");
+                }
+            }
+            else
+            {
+                System.Console.WriteLine($"result.Status：{result.Status}");
             }
         }
     }

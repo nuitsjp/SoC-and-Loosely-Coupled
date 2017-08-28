@@ -6,6 +6,6 @@ namespace HotPepper.Console.Usecases
 {
     public interface IFindRestaurants
     {
-        Task<IList<Restaurant>> FindNearbyRestaurantsAsync(TimeSpan timeout);
+        Task<FindRestaurantsResult> FindNearbyRestaurantsAsync(string apiKey, TimeSpan timeout);
     }
 }
