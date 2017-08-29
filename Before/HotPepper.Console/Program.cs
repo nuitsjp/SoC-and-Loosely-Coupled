@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HotPepper.Console
 {
@@ -33,10 +34,12 @@ namespace HotPepper.Console
             System.Console.WriteLine("Powered by ホットペッパー Webサービス");
             System.Console.WriteLine();
 
+            var hotPepperApiKey = Secrets.HotPepperApiKey;
+
             // GeoCoordinateWatcherを利用して位置情報を取得する  
             // GeoCoordinateWatcherではStart直後は位置情報が取得できないため
             // 最初のPositionChangedイベントの発生を待つ必要がある
-            GeoPosition<GeoCoordinate> position;
+            GeoCoordinate geoCoordinate;
             var timeout = TimeSpan.FromMinutes(1);
             using (var watcher = new GeoCoordinateWatcher())
             {
@@ -66,28 +69,28 @@ namespace HotPepper.Console
                 {
                     Monitor.Exit(this);
                 }
-                position = watcher.Position;
+                geoCoordinate = watcher.Position.Location;
                 watcher.Stop();
             }
 
             // リクルート WEBサービスのグルメサーチAPIを利用し、周辺のレストラン情報を取得する
             // Web APIを呼び出しJSONで結果を取得した後、Json.NETを利用してオブジェクト化する
-            GourmetSearchResult result;
+            JObject result;
             using (var httpClient = new HttpClient())
             {
                 var json = await httpClient.GetStringAsync(
                     $"{GourmetSearchApiEndpoint}" +
-                    $"?key={Secrets.HotPepperApiKey}" +
-                    $"&lat={position.Location.Latitude}" +
-                    $"&lng={position.Location.Longitude}" +
+                    $"?key={hotPepperApiKey}" +
+                    $"&lat={geoCoordinate.Latitude}" +
+                    $"&lng={geoCoordinate.Longitude}" +
                     $"&format=json&type=lite");
-                result = JsonConvert.DeserializeObject<GourmetSearchResult>(json);
+                result = JObject.Parse(json);
             }
 
             // 取得結果を出力する
-            foreach (var shop in result.Results.Shops)
+            foreach (var shop in result["results"]["shop"])
             {
-                System.Console.WriteLine($"店舗名：{shop.Name}\tジャンル：{shop.Genre.Name}");
+                System.Console.WriteLine($"店舗名：{(string)shop["name"]}\tジャンル：{(string)shop["genre"]["name"]}");
             }
         }
     }
