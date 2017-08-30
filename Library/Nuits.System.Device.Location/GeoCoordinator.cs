@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Device.Location;
+using System.Linq;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
-namespace HotPepper.Console.Integrations.GeoCoordinate
+namespace Nuits.System.Device.Location
 {
-    public class GeoCoordinateService : IGeoCoordinateService
+    public class GeoCoordinator : IGeoCoordinator
     {
-        public Position GetGurrentPosition(TimeSpan timeout)
+        public Location GetCurrent(TimeSpan timeout)
         {
-            GeoPosition<System.Device.Location.GeoCoordinate> position;
+            Location current;
             using (var watcher = new GeoCoordinateWatcher())
             {
                 // PositionChangedイベントを監視し、イベント発生時に待機中のスレッドを再開する
@@ -37,17 +41,24 @@ namespace HotPepper.Console.Integrations.GeoCoordinate
                 {
                     Monitor.Exit(this);
                 }
-                position = watcher.Position;
+
+                if (watcher.Position?.Location != null
+                    && !double.IsNaN(watcher.Position.Location.Latitude)
+                    && !double.IsNaN(watcher.Position.Location.Longitude))
+                {
+                    current = new Location
+                    {
+                        Latitude = watcher.Position.Location.Latitude,
+                        Longitude = watcher.Position.Location.Longitude
+                    };
+                }
+                else
+                {
+                    current = null;
+                }
                 watcher.Stop();
             }
-
-            if (position == null) return null;
-
-            return new Position
-            {
-                Latitude = position.Location.Latitude,
-                Longitude = position.Location.Longitude
-            };
+            return current;
         }
     }
 }

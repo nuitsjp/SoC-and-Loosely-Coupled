@@ -5,10 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using HotPepper.Console.Integrations;
-using HotPepper.Console.Integrations.GeoCoordinate;
-using HotPepper.Console.Integrations.Gourmet;
 using HotPepper.Console.Usecases;
 using Newtonsoft.Json;
+using Nuits.System.Device.Location;
 
 namespace HotPepper.Console
 {
@@ -26,7 +25,7 @@ namespace HotPepper.Console
             {
                 var builder = new ContainerBuilder();
                 builder.RegisterType<FindRestaurants>().As<IFindRestaurants>();
-                builder.RegisterType<GeoCoordinateService>().As<IGeoCoordinateService>();
+                builder.RegisterType<GeoCoordinator>().As<IGeoCoordinator>();
                 builder.RegisterType<GourmetService>().As<IGourmetService>();
                 builder.RegisterType<Program>();
                 var container = builder.Build();

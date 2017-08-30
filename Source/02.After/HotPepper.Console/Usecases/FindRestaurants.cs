@@ -5,19 +5,18 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using HotPepper.Console.Integrations;
-using HotPepper.Console.Integrations.GeoCoordinate;
-using HotPepper.Console.Integrations.Gourmet;
+using Nuits.System.Device.Location;
 
 namespace HotPepper.Console.Usecases
 {
     public class FindRestaurants : IFindRestaurants
     {
-        private readonly IGeoCoordinateService _geoCoordinateService;
+        private readonly IGeoCoordinator _geoCoordinator;
         private readonly IGourmetService _gourmetService;
 
-        public FindRestaurants(IGeoCoordinateService geoCoordinateService, IGourmetService gourmetService)
+        public FindRestaurants(IGeoCoordinator geoCoordinator, IGourmetService gourmetService)
         {
-            _geoCoordinateService = geoCoordinateService;
+            _geoCoordinator = geoCoordinator;
             _gourmetService = gourmetService;
         }
 
@@ -25,19 +24,19 @@ namespace HotPepper.Console.Usecases
         {
             var restaurants = new List<Restaurant>();
 
-            var position = _geoCoordinateService.GetGurrentPosition(timeout);
+            var position = _geoCoordinator.GetCurrent(timeout);
             if (position != null)
             {
                 try
                 {
-                    var gourmetSearchResult = await _gourmetService.SearchGourmetAsync(apiKey, position.Latitude, position.Longitude);
-                    foreach (var shop in gourmetSearchResult.Results.Shops)
+                    var shops = await _gourmetService.SearchShopsAsync(apiKey, position.Latitude, position.Longitude);
+                    foreach (var shop in shops)
                     {
                         restaurants.Add(
                             new Restaurant
                             {
                                 Name = shop.Name,
-                                Genre = shop.Genre.Name
+                                Genre = shop.Genre
                             });
                     }
 

@@ -39,6 +39,9 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Nuits.System.Device.Location">
+      <HintPath>..\..\..\Library\Nuits.System.Device.Location.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Device" />
@@ -50,12 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integrations\GeoCoordinate\IGeoCoordinateService.cs" />
-    <Compile Include="Integrations\Gourmet\GourmetSearchResult.cs" />
-    <Compile Include="Integrations\GeoCoordinate\GeoCoordinateService.cs" />
-    <Compile Include="Integrations\Gourmet\GourmetService.cs" />
-    <Compile Include="Integrations\GeoCoordinate\Position.cs" />
-    <Compile Include="Integrations\Gourmet\IGourmetService.cs" />
+    <Compile Include="Integrations\GourmetService.cs" />
+    <Compile Include="Integrations\IGourmetService.cs" />
+    <Compile Include="Integrations\Shop.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Secrets.cs" />
