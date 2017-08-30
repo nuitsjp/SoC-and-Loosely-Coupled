@@ -22,39 +22,27 @@ namespace HotPepper.Console.Usecases
 
         public async Task<FindRestaurantsResult> FindNearbyRestaurantsAsync(string apiKey, TimeSpan timeout)
         {
-            var restaurants = new List<Restaurant>();
-
-            var position = _geoCoordinator.GetCurrent(timeout);
-            if (position != null)
-            {
-                try
-                {
-                    var shops = await _gourmetService.SearchShopsAsync(apiKey, position.Latitude, position.Longitude);
-                    foreach (var shop in shops)
-                    {
-                        restaurants.Add(
-                            new Restaurant
-                            {
-                                Name = shop.Name,
-                                Genre = shop.Genre
-                            });
-                    }
-
-                    var findRestaurantsResult = new FindRestaurantsResult
-                    {
-                        Status = FindRestaurantsResultStatus.Ok,
-                        Restaurants = restaurants
-                    };
-                    return findRestaurantsResult;
-                }
-                catch (HttpRequestException)
-                {
-                    return new FindRestaurantsResult { Status = FindRestaurantsResultStatus.NetworkError };
-                }
-            }
-            else
-            {
+            var location = _geoCoordinator.GetCurrent(timeout);
+            if (location == null)
                 return new FindRestaurantsResult { Status = FindRestaurantsResultStatus.Timeout };
+
+            try
+            {
+                var shops = await _gourmetService.SearchShopsAsync(apiKey, location);
+                var findRestaurantsResult = new FindRestaurantsResult
+                {
+                    Status = FindRestaurantsResultStatus.Ok,
+                    Restaurants = shops.Select(shop => new Restaurant
+                    {
+                        Name = shop.Name,
+                        Genre = shop.Genre
+                    }).ToList()
+                };
+                return findRestaurantsResult;
+            }
+            catch (HttpRequestException)
+            {
+                return new FindRestaurantsResult { Status = FindRestaurantsResultStatus.NetworkError };
             }
         }
     }

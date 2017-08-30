@@ -22,10 +22,10 @@ namespace HotPepper.Console.Tests.Usecases
             var findRestaurants = new FindRestaurants(geoCoordinateService.Object, gourmetService.Object);
 
             var timeout = TimeSpan.MaxValue;
-            var position = new Location { Latitude = double.MaxValue, Longitude = double.MinValue };
+            var location = new Location { Latitude = double.MaxValue, Longitude = double.MinValue };
             geoCoordinateService
                 .Setup(m => m.GetCurrent(timeout))
-                .Returns(() => position);
+                .Returns(() => location);
 
             var apiKey = "apiKey";
             var shops = new List<Shop>
@@ -35,13 +35,13 @@ namespace HotPepper.Console.Tests.Usecases
             };
             
             gourmetService
-                .Setup(m => m.SearchShopsAsync(apiKey, position.Latitude, position.Longitude))
+                .Setup(m => m.SearchShopsAsync(apiKey, location))
                 .ReturnsAsync(() => shops);
 
             var findRestaurantsResult = await findRestaurants.FindNearbyRestaurantsAsync(apiKey, timeout);
 
             geoCoordinateService.Verify(m => m.GetCurrent(timeout), Times.Once);
-            gourmetService.Verify(m => m.SearchShopsAsync(apiKey, position.Latitude, position.Longitude), Times.Once);
+            gourmetService.Verify(m => m.SearchShopsAsync(apiKey, location), Times.Once);
 
             Assert.NotNull(findRestaurantsResult);
             Assert.Equal(FindRestaurantsResultStatus.Ok, findRestaurantsResult.Status);
@@ -76,7 +76,7 @@ namespace HotPepper.Console.Tests.Usecases
             var findRestaurantsResult = await findRestaurants.FindNearbyRestaurantsAsync(apiKey, timeout);
 
             geoCoordinateService.Verify(m => m.GetCurrent(timeout), Times.Once);
-            gourmetService.Verify(m => m.SearchShopsAsync(It.IsAny<string>(), It.IsAny<double>(), It.IsAny<double>()), Times.Never);
+            gourmetService.Verify(m => m.SearchShopsAsync(It.IsAny<string>(), It.IsAny<Location>()), Times.Never);
 
             Assert.NotNull(findRestaurantsResult);
             Assert.Equal(FindRestaurantsResultStatus.Timeout, findRestaurantsResult.Status);
@@ -91,20 +91,20 @@ namespace HotPepper.Console.Tests.Usecases
             var findRestaurants = new FindRestaurants(geoCoordinateService.Object, gourmetService.Object);
 
             var timeout = TimeSpan.MaxValue;
-            var position = new Location { Latitude = double.MaxValue, Longitude = double.MinValue };
+            var location = new Location { Latitude = double.MaxValue, Longitude = double.MinValue };
             geoCoordinateService
                 .Setup(m => m.GetCurrent(timeout))
-                .Returns(() => position);
+                .Returns(() => location);
 
             var apiKey = "apiKey";
             gourmetService
-                .Setup(m => m.SearchShopsAsync(apiKey, position.Latitude, position.Longitude))
+                .Setup(m => m.SearchShopsAsync(apiKey, location))
                 .ThrowsAsync(new HttpRequestException());
 
             var findRestaurantsResult = await findRestaurants.FindNearbyRestaurantsAsync(apiKey, timeout);
 
             geoCoordinateService.Verify(m => m.GetCurrent(timeout), Times.Once);
-            gourmetService.Verify(m => m.SearchShopsAsync(apiKey, position.Latitude, position.Longitude), Times.Once);
+            gourmetService.Verify(m => m.SearchShopsAsync(apiKey, location), Times.Once);
 
             Assert.NotNull(findRestaurantsResult);
             Assert.Equal(FindRestaurantsResultStatus.NetworkError, findRestaurantsResult.Status);

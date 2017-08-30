@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Nuits.System.Device.Location;
 
 namespace HotPepper.Console.Integrations
 {
     public interface IGourmetService
     {
-        Task<IList<Shop>> SearchShopsAsync(string apiKey, double latitude, double longitude);
+        Task<IEnumerable<Shop>> SearchShopsAsync(string hotPepperApiKey, Location currentLocation);
     }
 }
