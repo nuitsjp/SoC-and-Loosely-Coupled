@@ -15,6 +15,6 @@ namespace HatPepper.Integrations
         /// <param name="currentLocation"></param>
         /// <returns></returns>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
-        Task<IEnumerable<GourmetInfo>> SearchGourmetInfosAsync(string hotPepperApiKey, Location currentLocation);
+        Task<GourmetSearchResult> SearchGourmetInfosAsync(string hotPepperApiKey, Location currentLocation);
     }
 }

@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 
 namespace HatPepper.Integrations
 {
@@ -22,7 +21,7 @@ namespace HatPepper.Integrations
         /// <param name="currentLocation"></param>
         /// <returns></returns>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
-        public async Task<IEnumerable<GourmetInfo>> SearchGourmetInfosAsync(string hotPepperApiKey, Location currentLocation)
+        public async Task<GourmetSearchResult> SearchGourmetInfosAsync(string hotPepperApiKey, Location currentLocation)
         {
             // リクルート WEBサービスのグルメサーチAPIを利用し、周辺のレストラン情報を取得する
             // Web APIを呼び出しJSONで結果を取得した後、Json.NETを利用してオブジェクト化する
@@ -34,12 +33,7 @@ namespace HatPepper.Integrations
                     $"&lat={currentLocation.Latitude}" +
                     $"&lng={currentLocation.Longitude}" +
                     $"&format=json&type=lite");
-                var result = JsonConvert.DeserializeObject<GourmetSearchResult>(json);
-                return result.Results.Shops.Select(shop => new GourmetInfo
-                {
-                    ShopName = shop.Name,
-                    Genre = shop.Genre.Name
-                });
+                return JsonConvert.DeserializeObject<GourmetSearchResult>(json);
             }
         }
     }

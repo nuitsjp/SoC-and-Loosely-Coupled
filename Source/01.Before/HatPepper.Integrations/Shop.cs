@@ -2,7 +2,7 @@
 
 namespace HatPepper.Integrations
 {
-    internal class Shop
+    public class Shop
     {
         [JsonProperty("name")]
         public string Name { get; set; }

@@ -33,13 +33,13 @@ namespace HatPepper.Usecases.Tests
 
             // グルメサーチAPIが呼び出された際の振る舞いをセットアップする
             var apiKey = "apiKey";
-            var shops = new List<Shop>
+            var shops = new List<GourmetInfo>
             {
-                new Shop{ Name = "Name0", Genre = "Genre0"},
-                new Shop{ Name = "Name1", Genre = "Genre1"}
+                new GourmetInfo{ ShopName = "Name0", Genre = "Genre0"},
+                new GourmetInfo{ ShopName = "Name1", Genre = "Genre1"}
             };
             gourmetService
-                .Setup(m => m.SearchShopsAsync(apiKey, location))
+                .Setup(m => m.SearchGourmetInfosAsync(apiKey, location))
                 .ReturnsAsync(() => shops);
 
             // 現在地周辺のレストラン一覧を取得する
@@ -52,7 +52,7 @@ namespace HatPepper.Usecases.Tests
             // FindNearbyRestaurantsAsyncメソッドで渡されたpiKeyと
             // GetCurrentの呼び出し結果で取得されたLocationを引数に
             // SearchShopsAsyncが一度だけ呼び出されたことを確認する
-            gourmetService.Verify(m => m.SearchShopsAsync(apiKey, location), Times.Once);
+            gourmetService.Verify(m => m.SearchGourmetInfosAsync(apiKey, location), Times.Once);
 
             // 取得結果を確認する
             Assert.NotNull(findRestaurantsResult);
@@ -93,7 +93,7 @@ namespace HatPepper.Usecases.Tests
             var findRestaurantsResult = await findRestaurants.FindNearbyRestaurantsAsync(apiKey, timeout);
 
             geoCoordinateService.Verify(m => m.GetCurrent(timeout), Times.Once);
-            gourmetService.Verify(m => m.SearchShopsAsync(It.IsAny<string>(), It.IsAny<Location>()), Times.Never);
+            gourmetService.Verify(m => m.SearchGourmetInfosAsync(It.IsAny<string>(), It.IsAny<Location>()), Times.Never);
 
             Assert.NotNull(findRestaurantsResult);
             Assert.Equal(FindRestaurantsResultStatus.Timeout, findRestaurantsResult.Status);
@@ -120,13 +120,13 @@ namespace HatPepper.Usecases.Tests
             // SearchShopsAsyncが呼び出された場合にHttpRequestExceptionをスローするようにセットアップする
             var apiKey = "apiKey";
             gourmetService
-                .Setup(m => m.SearchShopsAsync(apiKey, location))
+                .Setup(m => m.SearchGourmetInfosAsync(apiKey, location))
                 .ThrowsAsync(new HttpRequestException());
 
             var findRestaurantsResult = await findRestaurants.FindNearbyRestaurantsAsync(apiKey, timeout);
 
             geoCoordinateService.Verify(m => m.GetCurrent(timeout), Times.Once);
-            gourmetService.Verify(m => m.SearchShopsAsync(apiKey, location), Times.Once);
+            gourmetService.Verify(m => m.SearchGourmetInfosAsync(apiKey, location), Times.Once);
 
             Assert.NotNull(findRestaurantsResult);
             Assert.Equal(FindRestaurantsResultStatus.NetworkError, findRestaurantsResult.Status);

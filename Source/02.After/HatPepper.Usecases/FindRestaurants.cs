@@ -27,13 +27,13 @@ namespace HatPepper.Usecases
 
             try
             {
-                var shops = await _gourmetService.SearchShopsAsync(apiKey, location);
+                var shops = await _gourmetService.SearchGourmetInfosAsync(apiKey, location);
                 var findRestaurantsResult = new FindRestaurantsResult
                 {
                     Status = FindRestaurantsResultStatus.Ok,
                     Restaurants = shops.Select(shop => new Restaurant
                     {
-                        Name = shop.Name,
+                        Name = shop.ShopName,
                         Genre = shop.Genre
                     }).ToList()
                 };

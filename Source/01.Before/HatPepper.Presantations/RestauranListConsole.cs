@@ -13,14 +13,6 @@ namespace HatPepper.Presantations
     /// </summary>
     public class RestauranListConsole
     {
-        private readonly IFindRestaurants _findRestaurants;
-
-        public RestauranListConsole(IFindRestaurants findRestaurants)
-        {
-            _findRestaurants = findRestaurants;
-        }
-
-
         /// <summary>
         /// 現在地周辺のレストラン一覧を表示する
         /// </summary>
@@ -31,19 +23,12 @@ namespace HatPepper.Presantations
         public async Task BrowseRestaurantList(TextWriter textWriter, string apiKey, TimeSpan timeout)
         {
             // 現在地周辺のレストラン一覧を取得する
-            var result = await _findRestaurants.FindNearbyRestaurantsAsync(apiKey, timeout);
+            FindRestaurants findRestaurants = new FindRestaurants();
+            var restaurants = await findRestaurants.FindNearbyRestaurantsAsync(apiKey, timeout);
 
-            // 取得結果を表示する
-            if (result.Status == FindRestaurantsResultStatus.Ok)
+            foreach (var restaurant in restaurants)
             {
-                foreach (var restaurant in result.Restaurants)
-                {
-                    textWriter.WriteLine($"店舗名：{restaurant.Name}\tジャンル：{restaurant.Genre}");
-                }
-            }
-            else
-            {
-                textWriter.WriteLine($"result.Status：{result.Status}");
+                textWriter.WriteLine($"店舗名：{restaurant.Name}\tジャンル：{restaurant.Genre.Name}");
             }
         }
     }

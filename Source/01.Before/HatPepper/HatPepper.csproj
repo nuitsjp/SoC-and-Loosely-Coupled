@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{77CEB631-3ADB-4462-B204-0365BA62D6C6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HatPepper.Integrations</RootNamespace>
-    <AssemblyName>HatPepper.Integrations</AssemblyName>
+    <ProjectGuid>{F0B8C9A8-4D42-47BE-9C26-A5CE0E646C5F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>HatPepper</RootNamespace>
+    <AssemblyName>HatPepper</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -20,8 +21,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,12 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Device" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,20 +46,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Genre.cs" />
-    <Compile Include="GeoCoordinator.cs" />
-    <Compile Include="GourmetInfo.cs" />
-    <Compile Include="GourmetSearchResult.cs" />
-    <Compile Include="GourmetService.cs" />
-    <Compile Include="IGeoCoordinator.cs" />
-    <Compile Include="IGourmetService.cs" />
-    <Compile Include="Location.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Results.cs" />
-    <Compile Include="Shop.cs" />
+    <Compile Include="Secrets.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HatPepper.Integrations\HatPepper.Integrations.csproj">
+      <Project>{77ceb631-3adb-4462-b204-0365ba62d6c6}</Project>
+      <Name>HatPepper.Integrations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HatPepper.Presantations\HatPepper.Presantations.csproj">
+      <Project>{a95d7aab-f911-4496-a5ea-2a74d43151b8}</Project>
+      <Name>HatPepper.Presantations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HatPepper.Usecases\HatPepper.Usecases.csproj">
+      <Project>{ade6053f-c92a-4293-b27a-427c696f7cae}</Project>
+      <Name>HatPepper.Usecases</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>if not exist "$(ProjectDir)Secrets.cs" copy "$(ProjectDir)Secrets_sample.cs" "$(ProjectDir)Secrets.cs" &gt;nul</PreBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="Genre.cs" />
     <Compile Include="GeoCoordinator.cs" />
-    <Compile Include="GourmetInfo.cs" />
     <Compile Include="GourmetSearchResult.cs" />
     <Compile Include="GourmetService.cs" />
     <Compile Include="IGeoCoordinator.cs" />
