@@ -10,14 +10,13 @@ namespace HatPepper.Usecases
 {
     public class FindRestaurants
     {
-        public async Task<IEnumerable<Shop>> FindNearbyRestaurantsAsync(string apiKey, TimeSpan timeout)
+        public async Task<GourmetSearchResult> FindNearbyRestaurantsAsync(string apiKey, TimeSpan timeout)
         {
             GeoCoordinator geoCoordinator = new GeoCoordinator();
             var location = geoCoordinator.GetCurrent(timeout);
 
             GourmetService gourmetService = new GourmetService();
-            var result = await gourmetService.SearchGourmetInfosAsync(apiKey, location);
-            return result.Results.Shops;
+            return await gourmetService.SearchGourmetInfosAsync(apiKey, location);
         }
     }
 }

@@ -24,11 +24,11 @@ namespace HatPepper.Presantations
         {
             // 現在地周辺のレストラン一覧を取得する
             FindRestaurants findRestaurants = new FindRestaurants();
-            var restaurants = await findRestaurants.FindNearbyRestaurantsAsync(apiKey, timeout);
+            var result = await findRestaurants.FindNearbyRestaurantsAsync(apiKey, timeout);
 
-            foreach (var restaurant in restaurants)
+            foreach (var shop in result.Results.Shops)
             {
-                textWriter.WriteLine($"店舗名：{restaurant.Name}\tジャンル：{restaurant.Genre.Name}");
+                textWriter.WriteLine($"店舗名：{shop.Name}\tジャンル：{shop.Genre.Name}");
             }
         }
     }
