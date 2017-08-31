@@ -6,10 +6,20 @@ using Newtonsoft.Json.Linq;
 
 namespace HatPepper.Integrations
 {
+    /// <summary>
+    /// グルメサーチAPIクライアント
+    /// </summary>
     public class GourmetService : IGourmetService
     {
         private const string GourmetSearchApiEndpoint = "https://webservice.recruit.co.jp/hotpepper/gourmet/v1/";
 
+        /// <summary>
+        /// 指定座標周辺の店舗情報を取得する
+        /// </summary>
+        /// <param name="hotPepperApiKey"></param>
+        /// <param name="currentLocation"></param>
+        /// <returns></returns>
+        /// <exception cref="System.Net.Http.HttpRequestException"></exception>
         public async Task<IEnumerable<Shop>> SearchShopsAsync(string hotPepperApiKey, Location currentLocation)
         {
             // リクルート WEBサービスのグルメサーチAPIを利用し、周辺のレストラン情報を取得する

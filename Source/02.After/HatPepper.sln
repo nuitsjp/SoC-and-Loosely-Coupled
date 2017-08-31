@@ -11,6 +11,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatPepper.Usecases", "HatPe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatPepper.Integrations", "HatPepper.Integrations\HatPepper.Integrations.csproj", "{77CEB631-3ADB-4462-B204-0365BA62D6C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatPepper.Usecases.Tests", "HatPepper.Usecases.Tests\HatPepper.Usecases.Tests.csproj", "{34BC464A-97F2-4E6A-BA1B-A446B57E35BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatPepper.Integrations.Tests", "HatPepper.Integrations.Tests\HatPepper.Integrations.Tests.csproj", "{F4B96B25-2616-4201-AF03-FD585B13E21C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01.Presentation", "01.Presentation", "{3AB5677D-11B1-4505-B5C0-1F76AD226636}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02.Usecase", "02.Usecase", "{A6196442-B148-497A-A32C-02C40550E952}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.Integration", "03.Integration", "{040EC281-2692-49D9-9B18-232D3B48707E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +43,24 @@ Global
 		{77CEB631-3ADB-4462-B204-0365BA62D6C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77CEB631-3ADB-4462-B204-0365BA62D6C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77CEB631-3ADB-4462-B204-0365BA62D6C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34BC464A-97F2-4E6A-BA1B-A446B57E35BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34BC464A-97F2-4E6A-BA1B-A446B57E35BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34BC464A-97F2-4E6A-BA1B-A446B57E35BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34BC464A-97F2-4E6A-BA1B-A446B57E35BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4B96B25-2616-4201-AF03-FD585B13E21C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4B96B25-2616-4201-AF03-FD585B13E21C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4B96B25-2616-4201-AF03-FD585B13E21C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4B96B25-2616-4201-AF03-FD585B13E21C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A95D7AAB-F911-4496-A5EA-2A74D43151B8} = {3AB5677D-11B1-4505-B5C0-1F76AD226636}
+		{ADE6053F-C92A-4293-B27A-427C696F7CAE} = {A6196442-B148-497A-A32C-02C40550E952}
+		{77CEB631-3ADB-4462-B204-0365BA62D6C6} = {040EC281-2692-49D9-9B18-232D3B48707E}
+		{34BC464A-97F2-4E6A-BA1B-A446B57E35BB} = {A6196442-B148-497A-A32C-02C40550E952}
+		{F4B96B25-2616-4201-AF03-FD585B13E21C} = {040EC281-2692-49D9-9B18-232D3B48707E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {913C57F3-357B-4DDD-A5D1-B62E4C8B5447}

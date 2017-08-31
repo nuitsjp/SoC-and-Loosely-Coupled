@@ -25,15 +25,27 @@ namespace HatPepper
             }
             else
             {
+                // DIコンテナーを初期化する
                 var builder = new ContainerBuilder();
                 builder.RegisterType<FindRestaurants>().As<IFindRestaurants>();
                 builder.RegisterType<GeoCoordinator>().As<IGeoCoordinator>();
                 builder.RegisterType<GourmetService>().As<IGourmetService>();
-                builder.RegisterType<RestauranListConsole>().As<IRestauranListConsole>();
+                builder.RegisterType<RestauranListConsole>();
                 var container = builder.Build();
 
-                var restauranListConsole = container.Resolve<IRestauranListConsole>();
-                await restauranListConsole.BrowseRestaurantList(Secrets.HotPepperApiKey, Console.Out);
+
+                // コンテナからRestauranListConsoleを取得する
+                var restauranListConsole = container.Resolve<RestauranListConsole>();
+
+                try
+                {
+                    // レストラン一覧を出力する
+                    await restauranListConsole.BrowseRestaurantList(Console.Out, Secrets.HotPepperApiKey, TimeSpan.FromMinutes(1));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
             Console.WriteLine();
             Console.WriteLine("Enterキーを押してアプリを終了してください。");

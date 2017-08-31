@@ -8,7 +8,10 @@ using HatPepper.Usecases;
 
 namespace HatPepper.Presantations
 {
-    public class RestauranListConsole : IRestauranListConsole
+    /// <summary>
+    /// プレゼンテーションはテストしない前提
+    /// </summary>
+    public class RestauranListConsole
     {
         private readonly IFindRestaurants _findRestaurants;
 
@@ -18,16 +21,19 @@ namespace HatPepper.Presantations
         }
 
 
-        public async Task BrowseRestaurantList(string apiKey, TextWriter textWriter)
+        /// <summary>
+        /// 現在地周辺のレストラン一覧を表示する
+        /// </summary>
+        /// <param name="textWriter"></param>
+        /// <param name="apiKey"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public async Task BrowseRestaurantList(TextWriter textWriter, string apiKey, TimeSpan timeout)
         {
-            // GeoCoordinateWatcherを利用して位置情報を取得する  
-            // GeoCoordinateWatcherではStart直後は位置情報が取得できないため
-            // 最初のPositionChangedイベントの発生を待つ必要がある
-            var timeout = TimeSpan.FromMinutes(1);
-
+            // 現在地周辺のレストラン一覧を取得する
             var result = await _findRestaurants.FindNearbyRestaurantsAsync(apiKey, timeout);
 
-            // 取得結果を出力する
+            // 取得結果を表示する
             if (result.Status == FindRestaurantsResultStatus.Ok)
             {
                 foreach (var restaurant in result.Restaurants)

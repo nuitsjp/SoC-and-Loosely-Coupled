@@ -4,10 +4,21 @@ using System.Threading;
 
 namespace HatPepper.Integrations
 {
+    /// <summary>
+    /// 端末の位置情報を取得する
+    /// </summary>
     public class GeoCoordinator : IGeoCoordinator
     {
+        /// <summary>
+        /// 現在地を取得する
+        /// </summary>
+        /// <param name="timeout"></param>
+        /// <returns>タイムアウト時間を経過しても取得できない場合はnullを返す。</returns>
         public Location GetCurrent(TimeSpan timeout)
         {
+            // GeoCoordinateWatcherを利用して位置情報を取得する  
+            // GeoCoordinateWatcherではStart直後は位置情報が取得できないため
+            // 最初のPositionChangedイベントの発生を待つ必要がある
             Location current;
             using (var watcher = new GeoCoordinateWatcher())
             {
